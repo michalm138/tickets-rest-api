@@ -47,3 +47,25 @@ class UserSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data['password'])
         instance.save()
         return instance
+
+
+class CreateUpdateCompanySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Company
+        fields = '__all__'
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        instance = models.Company(**validated_data)
+        instance.user = self.context['request'].user
+        instance.save()
+        return instance
+
+
+class CompanySerializer(serializers.ModelSerializer):
+    country = serializers.StringRelatedField(source='country.name')
+
+    class Meta:
+        model = models.Company
+        exclude = ['user']
