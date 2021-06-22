@@ -100,3 +100,18 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Event
         fields = '__all__'
+
+
+class CreateTicketSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Ticket
+        fields = '__all__'
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    event = EventSerializer(read_only=True)
+
+    class Meta:
+        model = models.Ticket
+        fields = '__all__'

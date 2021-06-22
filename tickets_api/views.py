@@ -127,3 +127,18 @@ class ListEvents(ListAPIView):
         'user__username'
     ]
     filterset_class = ListEventsFiltering
+
+
+class CreateTicket(CreateAPIView):
+    queryset = models.Ticket.objects.all()
+    serializer_class = serializers.CreateTicketSerializer
+
+
+class TicketDetails(APIView):
+
+    def get(self, request, *args, **kwargs):
+        response_data = {}
+        response_data['ticket'] = serializers.TicketSerializer(
+            models.Ticket.objects.get(id=kwargs['id'])
+        ).data
+        return Response(response_data)
