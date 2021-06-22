@@ -130,3 +130,10 @@ class ConfirmTicketSerializer(serializers.ModelSerializer):
         fields = [
             'confirmed',
         ]
+
+
+class TicketStatsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Ticket
+        exclude = ['event']

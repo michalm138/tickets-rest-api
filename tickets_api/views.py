@@ -154,3 +154,19 @@ class ConfirmTicket(UpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save(confirmed=True)
+
+
+class GetEventStats(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        response_data = {}
+        event_instance = models.Event.objects.get(pk=kwargs['pk'])
+        ticket_instance = models.Ticket.objects.filter(event=event_instance)
+        if event_instance.user == request.user:
+            response_data['event_details'] = serializers.EventSerializer(event_instance).data
+            response_data['sold_tickets'] = ticket_instance.count()
+            response_data['sold_tickets_info'] = serializers.TicketStatsSerializer(ticket_instance, many=True).data
+            return Response(response_data)
+        else:
+            return Response({'error:': 'You do not have access to see stats of this event.'})
