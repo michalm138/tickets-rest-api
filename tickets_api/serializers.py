@@ -106,7 +106,13 @@ class CreateTicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Ticket
-        fields = '__all__'
+        fields = [
+            'id',
+            'event',
+            'first_name',
+            'last_name',
+            'people'
+        ]
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -115,3 +121,12 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Ticket
         fields = '__all__'
+
+
+class ConfirmTicketSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Ticket
+        fields = [
+            'confirmed',
+        ]

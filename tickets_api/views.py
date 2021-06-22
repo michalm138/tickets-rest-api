@@ -142,3 +142,15 @@ class TicketDetails(APIView):
             models.Ticket.objects.get(id=kwargs['id'])
         ).data
         return Response(response_data)
+
+
+class ConfirmTicket(UpdateAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = serializers.ConfirmTicketSerializer
+    http_method_names = ['patch']
+
+    def get_queryset(self):
+        return models.Ticket.objects.filter(event__user=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(confirmed=True)
