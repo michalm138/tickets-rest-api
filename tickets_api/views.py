@@ -165,8 +165,7 @@ class GetEventStats(APIView):
         ticket_instance = models.Ticket.objects.filter(event=event_instance)
         if event_instance.user == request.user:
             response_data['event_details'] = serializers.EventSerializer(event_instance).data
-            response_data['sold_tickets'] = ticket_instance.count()
-            response_data['sold_tickets_info'] = serializers.TicketStatsSerializer(ticket_instance, many=True).data
+            response_data['sold_tickets'] = serializers.TicketStatsSerializer(ticket_instance, many=True).data
             return Response(response_data)
         else:
             return Response({'error:': 'You do not have access to see stats of this event.'})
