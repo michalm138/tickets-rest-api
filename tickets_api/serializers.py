@@ -66,3 +66,37 @@ class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Company
+        fields = '__all__'
+
+
+class CreateUpdateEventSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Event
+        fields = '__all__'
+
+    def validate(self, data):
+        if data['starts_at'] > data['ends_at']:
+            raise serializers.ValidationError({'Start_at': 'The start time has to be earlier than the end time.'})
+        return data
+
+    def validate_user(self, data):
+        if self.context['request'].user.pk != data.pk:
+            raise serializers.ValidationError('You cannot assign event to other users.')
+        return data
+
+    def validate_company(self, data):
+        if data:
+            if self.context['request'].user.pk != data.user.pk:
+                raise serializers.ValidationError('You cannot assign company which belong to other user.')
+        return data
+
+
+class EventSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(source='user.username')
+    company = serializers.StringRelatedField(source='company.name')
+    country = serializers.StringRelatedField(source='country.name')
+
+    class Meta:
+        model = models.Event
+        fields = '__all__'

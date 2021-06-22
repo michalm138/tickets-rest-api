@@ -9,4 +9,9 @@ urlpatterns = [
     path('company/update/<int:pk>/', views.UpdateCompany.as_view(), name='update-company'),
     path('company/delete/<int:pk>/', views.DeleteCompany.as_view(), name='delete-company'),
     path('company/list/', views.ListCompanies.as_view(), name='list-companies'),
+    path('event/create/', views.CreateEvent.as_view(), name='create-event'),
+    path('event/update/<int:pk>/', views.UpdateEvent.as_view(), name='update-event'),
+    path('event/delete/<int:pk>/', views.DeleteEvent.as_view(), name='delete-event'),
+    path('event/list/user/', views.ListUserEvents.as_view(), name='user-list-event'),
+    path('event/list/', views.ListEvents.as_view(), name='list-event'),
 ]
