@@ -6,7 +6,6 @@ from tickets_api import serializers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django_filters import rest_framework as drf_filters
 import django_filters
 
 
