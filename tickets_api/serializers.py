@@ -54,13 +54,11 @@ class CreateUpdateCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Company
         fields = '__all__'
-        read_only_fields = ['user']
 
-    def create(self, validated_data):
-        instance = models.Company(**validated_data)
-        instance.user = self.context['request'].user
-        instance.save()
-        return instance
+    def validate_user(self, data):
+        if self.context['request'].user.pk != data.pk:
+            raise serializers.ValidationError('You cannot assign company to other users.')
+        return data
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -68,4 +66,3 @@ class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Company
-        exclude = ['user']
