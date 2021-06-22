@@ -7,7 +7,7 @@ import uuid
 
 def positive_decimal_validator(value):
     if value < 0:
-        raise ValidationError("Decimal value is not positive")
+        raise ValidationError("Number value is not positive")
 
 
 class Country(models.Model):
@@ -44,7 +44,7 @@ class Event(models.Model):
     name = models.CharField(max_length=255, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
-    people_limit = models.PositiveIntegerField()
+    people_limit = models.PositiveIntegerField(validators=[positive_decimal_validator])
     ticket_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[positive_decimal_validator])
     age_restrictions = models.PositiveIntegerField(null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
