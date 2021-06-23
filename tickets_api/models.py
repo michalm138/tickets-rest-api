@@ -5,9 +5,14 @@ from django.core.exceptions import ValidationError
 import uuid
 
 
-def positive_decimal_validator(value):
+def positive_number_validator(value):
     if value < 0:
         raise ValidationError("Number value is not positive")
+
+
+def ticket_people_validator(value):
+    if value <= 0:
+        raise ValidationError('Number of people is incorrect.')
 
 
 class Country(models.Model):
@@ -44,8 +49,8 @@ class Event(models.Model):
     name = models.CharField(max_length=255, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
-    people_limit = models.PositiveIntegerField(validators=[positive_decimal_validator])
-    ticket_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[positive_decimal_validator])
+    people_limit = models.PositiveIntegerField(validators=[positive_number_validator])
+    ticket_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[positive_number_validator])
     age_restrictions = models.PositiveIntegerField(null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     city = models.CharField(max_length=255)
@@ -63,7 +68,7 @@ class Ticket(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    people = models.PositiveIntegerField(validators=[positive_decimal_validator])
+    people = models.PositiveIntegerField(validators=[ticket_people_validator])
     created_at = models.DateTimeField(auto_now_add=True)
     confirmed = models.BooleanField(default=False)
 
