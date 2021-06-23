@@ -1,5 +1,19 @@
 from django.urls import path
 from tickets_api import views
+from django.conf.urls import url
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="API Documentation",
+    ),
+    public=True,
+    permission_classes=(permissions.IsAuthenticated,),
+)
 
 urlpatterns = [
     path('user/create/', views.CreateUser.as_view(), name='create-user'),
@@ -18,4 +32,8 @@ urlpatterns = [
     path('ticket/create/', views.CreateTicket.as_view(), name='create-ticket'),
     path('ticket/details/<uuid:id>/', views.TicketDetails.as_view(), name='ticket-details'),
     path('ticket/confirm/<uuid:pk>/', views.ConfirmTicket.as_view(), name='confirm-ticket'),
+    # Swagger urls
+    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
