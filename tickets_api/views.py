@@ -10,6 +10,7 @@ import django_filters
 
 
 class CreateUser(CreateAPIView):
+    permission_classes = ()
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
 
@@ -113,6 +114,7 @@ class ListEventsFiltering(django_filters.FilterSet):
 
 
 class ListEvents(ListAPIView):
+    permission_classes = ()
     queryset = models.Event.objects.all()
     serializer_class = serializers.EventSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
@@ -130,6 +132,7 @@ class ListEvents(ListAPIView):
 
 
 class CreateTicket(CreateAPIView):
+    permission_classes = ()
     queryset = models.Ticket.objects.all()
     serializer_class = serializers.CreateTicketSerializer
 
