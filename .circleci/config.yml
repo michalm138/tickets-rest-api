@@ -1,0 +1,30 @@
+version: 2.1
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t registry.heroku.com/tickets-rest-api/web .
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+            docker push registry.heroku.com/tickets-rest-api/web
+  deploy:
+      machine: true
+      steps:
+        - checkout
+        - run:
+            name: Deploy docker image to heroku
+            command: |
+              sudo curl https://cli-assets.heroku.com/install.sh | sh
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a tickets-rest-api web
