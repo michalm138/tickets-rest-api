@@ -158,5 +158,3 @@ AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
 DEFAULT_FILE_STORAGE = 'tickets.custom_storage.MediaStorage'
 STATICFILES_STORAGE = 'tickets.custom_storage.StaticStorage'
-
-django_heroku.settings(locals())
